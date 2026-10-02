@@ -1,0 +1,10 @@
+{
+  "description": "This web app offers a two-layer navigation solution, allowing users to seamlessly swipe between main views while utilizing a dynamic pill navigation for quick access to options.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
