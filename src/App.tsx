@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback, type ReactNode } from "react"
 import Navigation20MobileAppIos from "./imports/Navigation20MobileAppIos/index"
 import BottomNav from "./BottomNav"
+import SectionPage from "./SectionPages"
 
 // ─── SF Symbols as inline SVG (cross-platform, exact Figma geometry) ──────────
 
@@ -117,7 +118,7 @@ const UNSPLASH: Record<string, string> = {
 }
 
 function unsplashUrl(key: string, width: number): string {
-  return `https://images.unsplash.com/${UNSPLASH[key]}?w=${width}&h=${Math.round((width * 9) / 16)}&q=80&fit=crop&auto=format`
+  return `https://images.unsplash.com/${UNSPLASH[key] ?? key}?w=${width}&h=${Math.round((width * 9) / 16)}&q=80&fit=crop&auto=format`
 }
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -240,6 +241,18 @@ const MAIN_TABS: TabConfig[] = [
       { id: "fraude", label: "Fraude" },
       { id: "moord", label: "Moord" },
       { id: "cybercrime", label: "Cybercrime" },
+    ],
+  },
+  {
+    id: "financieel",
+    label: "Financieel",
+    pills: [
+      { id: "alles", label: "Alles" },
+      { id: "beurs", label: "Beurs" },
+      { id: "crypto", label: "Crypto" },
+      { id: "vastgoed", label: "Vastgoed" },
+      { id: "sparen", label: "Sparen" },
+      { id: "belastingen", label: "Belastingen" },
     ],
   },
 ]
@@ -422,6 +435,33 @@ const CONTENT: Record<string, Article[]> = {
   "misdaad/moord": [
     { label: "Cold case", title: "Politie lost cold case op na 35 jaar: DNA-match leidt naar verdachte in Gent", excerpt: "De zaak-Femke Brouwer, die in 1989 onopgelost bleef, wordt heropend.", image: "police1", timeAgo: "1 uur geleden" },
     { label: "Liquidatie", title: "Advocaat Derk Wiersum: twee jaar later wordt hoofdverdachte uitgeleverd", excerpt: "België levert de verdachte van de moord op de Taghi-advocaat uit.", image: "cell", timeAgo: "3 uur geleden", premium: true },
+  ],
+  "financieel/alles": [
+    { label: "Beurs", title: "Beurs sluit op recordhoogte na sterke bedrijfscijfers", excerpt: "De hoofdindex won ruim twee procent. Vooral banken en technologiebedrijven trokken de markt omhoog.", image: "banknotes", timeAgo: "40 min geleden" },
+    { label: "Rente", title: "Centrale bank verlaagt de rente voor het eerst in twee jaar", excerpt: "De rentebeslissing komt eerder dan verwacht. Spaarders en kopers merken de gevolgen binnen enkele weken.", image: "euro", timeAgo: "2 uur geleden", premium: true },
+    { label: "Vastgoed", title: "Huizenprijzen stijgen voor het vijfde kwartaal op rij", excerpt: "Vooral in de grote steden loopt het tekort aan woningen verder op. Starters komen steeds moeilijker aan de bak.", image: "amsterdam", timeAgo: "4 uur geleden" },
+    { label: "Crypto", title: "Bitcoin stijgt naar nieuw jaarhoogtepunt na instroom in beursfondsen", excerpt: "Analisten wijzen op grote institutionele aankopen. Tegelijk waarschuwen toezichthouders voor extreme koersschommelingen.", image: "code2", timeAgo: "Gisteren" },
+  ],
+  "financieel/beurs": [
+    { label: "Beurs", title: "Beurs sluit op recordhoogte na sterke bedrijfscijfers", excerpt: "De hoofdindex won ruim twee procent. Vooral banken en technologiebedrijven trokken de markt omhoog.", image: "banknotes", timeAgo: "40 min geleden" },
+    { label: "Aandelen", title: "Technologiefondsen onder druk: beleggers nemen winst na jaarstijging", excerpt: "Na een sterke eerste jaarhelft kozen veel beleggers voor winstnemingen. De sector verloor gemiddeld drie procent.", image: "code1", timeAgo: "3 uur geleden" },
+    { label: "Dividend", title: "Dividendseizoen start: dit zijn de grootste uitkeerders van het kwartaal", excerpt: "Bedrijven keren dit kwartaal samen bijna twintig miljard euro uit aan aandeelhouders.", image: "euro", timeAgo: "Gisteren", premium: true },
+  ],
+  "financieel/crypto": [
+    { label: "Bitcoin", title: "Bitcoin stijgt naar nieuw jaarhoogtepunt na instroom in beursfondsen", excerpt: "Analisten wijzen op grote institutionele aankopen. Tegelijk waarschuwen toezichthouders voor extreme koersschommelingen.", image: "code2", timeAgo: "Gisteren" },
+    { label: "Regelgeving", title: "Toezichthouder scherpt regels aan voor cryptohandelsplatformen", excerpt: "Platformen moeten voortaan strengere eisen voor klantidentificatie en bewaring van tegoeden naleven.", image: "code1", timeAgo: "5 uur geleden" },
+  ],
+  "financieel/vastgoed": [
+    { label: "Woningmarkt", title: "Huizenprijzen stijgen voor het vijfde kwartaal op rij", excerpt: "Vooral in de grote steden loopt het tekort aan woningen verder op. Starters komen steeds moeilijker aan de bak.", image: "amsterdam", timeAgo: "4 uur geleden" },
+    { label: "Hypotheek", title: "Hypotheekrente zakt: kopers krijgen weer meer leenruimte", excerpt: "Banken verlagen hun tarieven na de renteknip. Een gemiddeld gezin kan duizenden euro's meer lenen.", image: "euro", timeAgo: "Gisteren", premium: true },
+  ],
+  "financieel/sparen": [
+    { label: "Sparen", title: "Spaarrente keldert: waar kun je nog drie procent krijgen?", excerpt: "Banken passen hun tarieven aan. Wij zetten de beste spaarrekeningen en depots op een rij.", image: "euro", timeAgo: "6 uur geleden" },
+    { label: "Budget", title: "Zo bouw je met kleine bedragen een buffer op", excerpt: "Een vaste maandelijkse overschrijving is genoeg. Een financieel adviseur legt uit hoe je begint.", image: "banknotes", timeAgo: "Gisteren" },
+  ],
+  "financieel/belastingen": [
+    { label: "Belastingen", title: "Nieuwe belastingschijven: wie gaat er op vooruit?", excerpt: "Middeninkomens profiteren het meest van de aangekondigde verlaging. Hoge inkomens merken weinig verschil.", image: "binnenhof2", timeAgo: "2 uur geleden" },
+    { label: "Aangifte", title: "Belastingdienst handelt aangiftes sneller af dankzij nieuwe app", excerpt: "Burgers kunnen hun gegevens nu in enkele minuten controleren en aanvullen. Het ministerie verwacht minder fouten.", image: "scales", timeAgo: "Gisteren" },
   ],
   "misdaad/cybercrime": [
     { label: "Ransomware", title: "Ransomware legt drie gemeenten plat: burgerdiensten weken offline", excerpt: "Eindhoven, Helmond en Tilburg zijn getroffen. Losgeld van 3,5 miljoen geëist.", image: "code1", timeAgo: "2 uur geleden" },
@@ -701,6 +741,7 @@ function TabRow({
 
 export default function App() {
   const [activeTabIdx, setActiveTabIdx] = useState(0)
+  const [activeNavId, setActiveNavId] = useState("home")
   const [activePills, setActivePills] = useState<Record<string, string>>({})
   const [selectedSubmenu, setSelectedSubmenu] = useState<Record<string, Record<string, string>>>({})
   const [openMenuPillId, setOpenMenuPillId] = useState<string | null>(null)
@@ -853,6 +894,9 @@ export default function App() {
   return (
     <div style={{ background: "white", height: "100%", width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
+      {/* Home view stays mounted (hidden) while another bottom-nav section is open, so its state survives */}
+      <div style={{ flex: 1, minHeight: 0, display: activeNavId === "home" ? "flex" : "none", flexDirection: "column" }}>
+
       {/* ── Header — translates up with scroll, comes back on scroll-up ── */}
       <div
         ref={headerRef}
@@ -934,7 +978,7 @@ export default function App() {
       {/* ── Swipeable Content Carousel ── */}
       <div
         ref={viewportRef}
-        style={{ flex: 1, overflow: "hidden", position: "relative" }}
+        style={{ flex: 1, overflow: "hidden", position: "relative", touchAction: "pan-y" }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
@@ -972,7 +1016,7 @@ export default function App() {
             return (
               <div
                 key={tab.id}
-                style={{ width: `${100 / MAIN_TABS.length}%`, height: "100%", overflowY: "auto" }}
+                style={{ width: `${100 / MAIN_TABS.length}%`, height: "100%", overflowY: "auto", touchAction: "pan-y" }}
                 onScroll={tabIdx === activeTabIdx ? handleContentScroll : undefined}
               >
                 <div style={{ padding: "16px 16px 12px" }}>
@@ -995,8 +1039,12 @@ export default function App() {
         </div>
       </div>
 
+      </div>
+
+      {activeNavId !== "home" && <SectionPage id={activeNavId} header={<Navigation20MobileAppIos />} />}
+
       {/* ── Bottom navigation ── */}
-      <BottomNav />
+      <BottomNav activeId={activeNavId} onSelect={setActiveNavId} />
     </div>
   )
 }

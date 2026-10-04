@@ -45,7 +45,13 @@ const ITEMS: { id: string; label: string; icon: ReactNode }[] = [
   { id: "kijken", label: "Kijken", icon: ICON_KIJKEN },
 ]
 
-export default function BottomNav() {
+export default function BottomNav({
+  activeId,
+  onSelect,
+}: {
+  activeId: string
+  onSelect: (id: string) => void
+}) {
   return (
     <nav
       aria-label="Hoofdnavigatie onderaan"
@@ -61,11 +67,12 @@ export default function BottomNav() {
       }}
     >
       {ITEMS.map(item => {
-        const isActive = item.id === "home"
+        const isActive = item.id === activeId
         return (
           <button
             key={item.id}
             aria-current={isActive ? "page" : undefined}
+            onClick={() => onSelect(item.id)}
             style={{
               flex: "1 0 0",
               alignSelf: "stretch",
