@@ -758,7 +758,7 @@ export default function App() {
   const headerRef = useRef<HTMLDivElement>(null)
   const headerTranslate = useRef(0)
   const panelScrollTop = useRef(0)
-  const HEADER_HEIGHT = 106
+  const HEADER_HEIGHT = 52
 
   const handleContentScroll = useCallback((e: React.UIEvent<HTMLDivElement>) => {
     const el = e.currentTarget
